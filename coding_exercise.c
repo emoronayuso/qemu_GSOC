@@ -31,6 +31,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
 #define TAM 100
 
@@ -64,7 +65,7 @@ void peermgr_init(PeerManager *mgr, unsigned int maxpeers)
 	mgr->_maxpeers = maxpeers;
 	mgr->_num_peers = 0;
 }
-"
+
 /**
  * Free any resources allocated by @mgr.
  */
@@ -85,9 +86,9 @@ void peermgr_cleanup(PeerManager *mgr)
  */
 void peermgr_saw_peer(PeerManager *mgr, PeerId peer, time_t timestamp)
 {
-	
+
 	if (mgr->_num_peers < mgr->_maxpeers) {
-		mgr->_tabla_peers[_num_peers +1] = peer;
+		mgr->_tabla_peers[mgr->_num_peers +1] = peer;
 		mgr->_timestamp = timestamp;
 		mgr->_num_peers++;
 	} else {
@@ -105,12 +106,13 @@ void peermgr_saw_peer(PeerManager *mgr, PeerId peer, time_t timestamp)
 bool peermgr_pick_random_peer(PeerManager *mgr, PeerId *peer)
 {
     /* TODO use random(3) and assume a seed has already been set */
-	long int num = random(3);
+	//long int num = random(3);
+	//srandom(3);
+	//char *initstate(3, char *state, mgr->_num_peers);
+	srand(time(NULL));
+	int num_random = rand() % mgr->_num_peers;
 	
-	if (num < _num_peers) {
-		*peer = mgr->_tabla_peers[num];
-		return true;
-	} else
-		return false;
+	*peer = mgr->_tabla_peers[num_random];
+	return true;
 
 }
